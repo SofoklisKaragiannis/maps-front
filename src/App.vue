@@ -1,11 +1,13 @@
 <template>
   <div id="app">
+    <!--Include router-->
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 export default {
+  // initialise app
   name: 'app',
 };
 </script>

@@ -5,7 +5,7 @@
 
       <br>
       <h1>Bundle list:</h1>
-
+      <!--Display bundle list -->
       <div class="list-group" style="width: 80%; margin: 0 auto;">
         <a href="javascript:void(0)" v-for="bundle in getAvailableBundles"
               v-on:click="displayBundle(bundle)">
@@ -13,6 +13,8 @@
 
         </a>
       </div>
+
+      <!--Display selected bundle -->
       <div v-if="selectedBundle != undefined">
         <div id="bundleData">
           <div style="width: 50%; margin: 0 auto;">
@@ -126,12 +128,10 @@
 
   export default {
     data: function (){
+      // initial data values
       return {
-        lastId: 1,
         center: { lat: 0, lng: 0 },
-        mapBounds: {},
         zoom: 6,
-        gridSize: 50,
         mapType: 'satellite',
         scrollwheel: true,
         availableBundles: undefined,
@@ -141,13 +141,14 @@
     },
 
     methods: {
-
       displayBundle(bundle) {
+        // set selected bundle
         this.selectedBundle = bundle;
       },
 
       setMapData() {
         if (this.availableBundles !== undefined) {
+          // extreme lat and lng values
           let latMax = -90;
           let latMin = 90;
           let lngMax = -180;
@@ -155,9 +156,9 @@
 
           Object.entries(this.availableBundles).forEach(
             (bundle) => {
-
               Object.entries(bundle[1].paths).forEach(
                 (path) => {
+                  // array to store current polyline
                   let currentPolyline = [];
                   Object.entries(path[1].polyline).forEach(
                     (polylin) => {
@@ -165,23 +166,31 @@
                       let current = {lat: polylin[1].lat, lng: polylin[1].lng};
                       currentPolyline.push(current);
 
+                      // set max lat value
                       if (latMax < polylin[1].lat) {
                         latMax = polylin[1].lat;
                       }
+
+                      // set min lat value
                       if (latMin > polylin[1].lat) {
                         latMin = polylin[1].lat;
                       }
 
+                      // set max lng value
                       if (lngMax < polylin[1].lng) {
                         lngMax = polylin[1].lng;
                       }
+                      // set min lng value
                       if (lngMin > polylin[1].lng) {
                         lngMin = polylin[1].lng;
                       }
                     });
+                  // add all polylines
                   this.availablePolylines.push(currentPolyline);
                 });
             });
+
+          //calculate and set map center coordinates
           let latMid = (latMax + latMin) / 2;
           let lngMid = (lngMax + lngMin) / 2;
           this.center = {lat: latMid, lng: lngMid};
@@ -198,13 +207,14 @@
 
     computed: {
       getAvailableBundles() {
+        // request all bundels if not set
         if (this.availableBundles === undefined) {
           Vue.use(vueResource);
           return Vue.http.get('http://127.0.0.1:8080/rest/v1/retrieveAll')
               .then((response) => {
 
                 this.availableBundles = response.body;
-                console.log('this.availableBundles', this.availableBundles)
+                // initialise map data
                 this.setMapData();
           })
           .catch((errorResponse) => {
