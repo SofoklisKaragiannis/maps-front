@@ -207,10 +207,12 @@
 
     computed: {
       getAvailableBundles() {
+
         // request all bundels if not set
         if (this.availableBundles === undefined) {
           Vue.use(vueResource);
-          return Vue.http.get('http://127.0.0.1:8080/rest/v1/retrieveAll')
+          // request bundles from running environment
+          return Vue.http.get(process.env.apiUrl+'/rest/v1/retrieveAll')
               .then((response) => {
 
                 this.availableBundles = response.body;
