@@ -1,6 +1,6 @@
 # dispay-map
 
-> Dohi front-end application is created by using:
+> SmartBear front-end application is created by using:
 - Webpack module bundler (https://webpack.js.org/) 
 - Node Package Manager (npm)(https://docs.npmjs.com/)
 - Vue.js (http://devdocs.io/vue~2/)
