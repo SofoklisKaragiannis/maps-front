@@ -148,7 +148,7 @@
       getLocation(mouseArgs) {
         // create request url string
         let requestString = process.env.apiUrl+'/rest/v1/getLocation?lat=' + mouseArgs.latLng.lat() +'&lng=' + mouseArgs.latLng.lng();
-        if (this.availableBundles === undefined) {
+        if (this.availablePlaces === undefined) {
           Vue.use(vueResource);
           // request places from running environment
           return Vue.http.get(requestString)
